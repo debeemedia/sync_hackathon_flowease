@@ -48,7 +48,7 @@ async function createProject (req, res) {
         res.status(201).json({success: true, message: 'Project created successfully'})
 
     } catch (error) {
-        console.log(error,'the error')
+        console.log(error.message)
         if (error.message.includes('These collaborators do not exist:')) {
             return res.status(404).json({success: false, message: error.message})
         }

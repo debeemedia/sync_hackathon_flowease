@@ -16,6 +16,10 @@ const projectSchema = mongoose.Schema({
     },
     collaborators: [{
         type: String
+    }],
+    milestones: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Milestone'
     }]
 })
 
