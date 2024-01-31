@@ -41,7 +41,7 @@ async function sendConfirmationMail (req, res) {
 		}
 		await sendMail(emailOption, res)
 		// redirect the user from mail
-		res.redirect('https://flowease.onrender.com')
+		res.redirect('https://flowease.onrender.com/api')
 
 	} catch (error) {
 		console.error(error.message)
