@@ -1,10 +1,10 @@
 const express = require('express')
 const userRouter = express.Router()
-const createUser = require('../controllers/signupController')
-const { verifyMail, sendConfirmationMail } = require('../controllers/verifyMailController')
-const userLogin = require('../controllers/loginController')
+const createUser = require('../controllers/userControllers/signupController')
+const { verifyMail, sendConfirmationMail } = require('../controllers/userControllers/verifyMailController')
+const userLogin = require('../controllers/userControllers/loginController')
 const { authenticate } = require('../middleware/authentication')
-const getUser = require('../controllers/viewProfileController')
+const getUser = require('../controllers/userControllers/viewProfileController')
 
 
 userRouter.post('/register', createUser)

@@ -1,5 +1,5 @@
-const UserModel = require('../models/userModel');
-const { buildEmailTemplate, sendMail } = require("../utils/sendMail")
+const UserModel = require('../../models/userModel');
+const { buildEmailTemplate, sendMail } = require("../../utils/sendMail")
 
 async function verifyMail (req, res, next) {
 	try {
