@@ -35,7 +35,7 @@ async function userLogin(req, res) {
 
     
     } catch (error) {
-        console.log(error,'the error')
+        console.log(error.message)
         res.status(500).json('Internal server error')
     }
 }
