@@ -43,6 +43,19 @@ async function createMilestone (req, res) {
         await milestone.save()
         await ProjectModel.findByIdAndUpdate(project_id, {$push: {milestones: milestone.id}})
 
+        // emit a notification to client when milestone is created
+        const io = req.io
+        if (io) {
+            io.emit('milestone_created', {
+                type: 'milestone_created',
+                message: `You have been assigned a milestone with name: '${milestone.name}' on project: '${project.name}'`,
+                project_id,
+                milestone_id: milestone._id,
+                creator_id: project.user_id,
+                collaborator
+            })
+        }
+
         res.status(201).json({success: true, message: 'Milestone created successfully'})
 
     } catch (error) {

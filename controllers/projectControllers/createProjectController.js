@@ -56,6 +56,20 @@ async function createProject (req, res) {
                 await UserModel.findByIdAndUpdate(assignedCollaboratorId, {$push: {assigned_projects: project._id}})
             })
         )
+        
+        // emit a notification to client when project is created
+        const io = req.io;
+        if (io) {
+            io.emit('project_created', {
+                type: 'project_created',
+                message: `You have been added to a new project with name: ${project.name}`,
+                project_id: project._id,
+                creator_id: user_id,
+                collaborators: collaboratorEmails
+
+            })
+
+        }
 
         res.status(201).json({success: true, message: 'Project created successfully'})
 

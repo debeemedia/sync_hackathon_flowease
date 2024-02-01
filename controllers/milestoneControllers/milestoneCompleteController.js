@@ -5,7 +5,7 @@ async function markMilestoneCompleted (req, res) {
     try {
         const user_id = req.user.id
         console.log('user_id', user_id);
-        
+
         const milestone_id = req.params.milestone_id
         if (!milestone_id) {
             return res.status(400).json({success: false, message: 'Please provide milestone_id'})
@@ -27,6 +27,18 @@ async function markMilestoneCompleted (req, res) {
         }
         if (user_id == collaborator._id || user_id == project_owner_id) {
             await MilestoneModel.findByIdAndUpdate(milestone_id, {completed: true})
+
+            // emit a notification to client when milestone is completed
+            const io = req.io
+            io.emit('milestone_completed', {
+                type: 'milestone_completed',
+                message: `Completed the milestone: '${milestone.name}' for project: '${milestoneProject.project_id.name}'`,
+                milestone_id: milestone._id,
+                project_id: milestoneProject.project_id,
+                creator_id: project_owner_id,
+                collaborator: milestone.collaborator,
+                date_completed: Math.floor(Date.now()/1000) // converting to unix timestamp
+            })
 
         } else {
             return res.status(403).json({success: false, message: 'You are not the owner or collaborator for this milestone'})

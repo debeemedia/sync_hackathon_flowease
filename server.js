@@ -9,7 +9,11 @@ const app = express()
 const http = require('http')
 const server = http.createServer(app)
 const socketio = require('socket.io')
-const io = socketio(server)
+const io = socketio(server, {
+	cors: {
+		origin: '*'
+	}
+})
 
 app.use(cors())
 app.use(express.json())
@@ -17,6 +21,11 @@ app.use(express.json())
 app.set('views', './views')
 app.set('view engine', 'ejs')
 
+// middleware to pass on io instance
+app.use((req, res, next) => {
+	req.io = io;
+	next();
+});
 // use router
 app.use('/api', router)
 
@@ -31,6 +40,7 @@ mongoose.connect(process.env.MONGO_URL)
 const database = mongoose.connection
 database.on('error', (error) => console.log('Database connection failed', error.message))
 database.once('connected', () => console.log('Database is connected'))
+
 
 server.listen(port, () => {
     console.log(`Server running on port ${port}`)
