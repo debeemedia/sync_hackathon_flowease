@@ -5,7 +5,7 @@ async function createProject (req, res) {
     try {
         const user_id = req.user.id
         const {name, description, collaborators} = req.body
-        if (!name || ! description || !collaborators) {
+        if (!name || !description || !collaborators) {
             return res.status(400).json({success: false, message: 'Please provide required fields'})
         }
 
@@ -44,6 +44,18 @@ async function createProject (req, res) {
         })
 
         await project.save()
+
+        // push the created project into the project owner's array
+        await UserModel.findByIdAndUpdate(user_id, {$push: {created_projects: project._id}})
+
+        // push the assigned projects into the collaborators' arrays
+        await Promise.all(
+            collaborators.map(async collaborator => {
+                const assignedCollaborator = await UserModel.findOne({email: collaborator})
+                const assignedCollaboratorId = assignedCollaborator._id
+                await UserModel.findByIdAndUpdate(assignedCollaboratorId, {$push: {assigned_projects: project._id}})
+            })
+        )
 
         res.status(201).json({success: true, message: 'Project created successfully'})
 

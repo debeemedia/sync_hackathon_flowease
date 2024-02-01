@@ -19,7 +19,15 @@ const userSchema = new mongoose.Schema(
         verified: {
             type: Boolean,
             default: false
-        }
+        },
+        created_projects: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Project'
+        }],
+        assigned_projects: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Project'
+        }]
     }
 )
 
