@@ -29,7 +29,7 @@ async function createMilestone (req, res) {
         }
 
         if (!project.collaborators.includes(collaborator)) {
-            return res.status(400).json({success: false, message: "Please assign milestone to a project collaborator"})
+            return res.status(403).json({success: false, message: "Please assign milestone to a project collaborator"})
         }
 
         const milestone = new MilestoneModel({
