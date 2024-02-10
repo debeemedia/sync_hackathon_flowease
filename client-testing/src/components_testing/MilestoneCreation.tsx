@@ -5,7 +5,8 @@ const MilestoneCreation = () => {
     
     console.log('hello from MilestoneCreation');
     useEffect(() => {
-    const socket = io('localhost:6005');
+    // const socket = io('localhost:6005');
+    const socket = io('https://flowease.onrender.com');
 
     socket.on('milestone_created', (data) => {
       console.log('Received milestoneCreated event:', data);

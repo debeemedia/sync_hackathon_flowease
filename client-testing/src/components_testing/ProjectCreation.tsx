@@ -5,7 +5,8 @@ const ProjectCreation = () => {
     
     console.log('hello from ProjectCreation');
     useEffect(() => {
-    const socket = io('localhost:6005');
+    // const socket = io('localhost:6005');
+    const socket = io('https://flowease.onrender.com');
 
     socket.on('project_created', (data) => {
       console.log('Received projectCreated event:', data);
