@@ -13,7 +13,7 @@ async function createUser (req, res) {
     if (uniqueUser) {
         return res.status(400).json({success: false, message: 'Email already exists'})
     }
-    let newUser = new UserModel({email: email, full_name: full_name, password: password})
+    let newUser = new UserModel({email, full_name, password})
     await newUser.save()
     
     // send welcome message with verification link to user
